@@ -1,0 +1,64 @@
+#!/usr/bin/env python3.6
+
+
+"""
+Run from CLI.
+"""
+
+import csv
+from tw.tweet.timeline import TwitterTweetTimeline
+from tw.tweet.reply import TwitterTweetReply
+
+
+def build_csv_data(data=None):
+    result = [
+        "id",
+        "datetime",
+        "user_id",
+        "username",
+        "link",
+        "mentions",
+        "tweet",
+        "hashtags",
+        "replies",
+        "retweets",
+        "likes",
+        "retweet",
+        "user_rt",
+    ]
+
+    if data:
+        result = [
+            str(data['id']),
+            data['datetime'],
+            str(data['user_id']),
+            data['username'],
+            data['link'],
+            data['mentions'],
+            data['tweet'],
+            data['hashtags'],
+            data['replies'],
+            data['retweets'],
+            data['likes'],
+            data['retweet'],
+            data['user_rt']
+        ]
+    return result
+
+
+if __name__ == '__main__':
+    ttt = TwitterTweetTimeline()
+    ttt.run()
+
+    ttr = TwitterTweetReply()
+    for status in ttt.get_data():
+        with open(f"./data/tweet_reply/{status['username']}-{status['id']}.csv", 'w') as csvfile:
+            w = csv.writer(csvfile, delimiter='\t', quoting=csv.QUOTE_MINIMAL)
+            w.writerow(build_csv_data())
+            w.writerow(build_csv_data(status))
+
+            print(status['username'], status['id'])
+            print("=========================")
+            ttr.run(status['username'], status['id'])
+            for reply in ttr.get_data():
+                w.writerow(build_csv_data(reply))

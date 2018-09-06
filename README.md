@@ -13,8 +13,8 @@ Inspired and modified by [twint](https://github.com/twintproject/twint)
 ## Development
 1.  Clone from repository.
     ```
-    $ git clone http://git.blackeye.id/irvanmaul/scraper.git
-    $ cd scraper
+    $ git clone https://github.com/kitacode/sociotics
+    $ cd sociotics
     ```
 2.  Load development environment.
     ```
